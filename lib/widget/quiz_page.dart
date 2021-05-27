@@ -16,14 +16,15 @@ class _QuizPageState extends State<QuizPage> {
 
   void confereResposta(bool resposta){
 
-    if(perguntas.getPergunta().resposta == resposta ){
-      marcadoresPontos.add(Icon(Icons.check, color: Colors.green,));
-      corretas++;
-    }else{
-      marcadoresPontos.add(Icon(Icons.close, color: Colors.red,));
-    }
-
     setState(() {
+
+      if(perguntas.getPergunta().resposta == resposta ){
+        marcadoresPontos.add(Icon(Icons.check, color: Colors.green,));
+        corretas++;
+      }else{
+        marcadoresPontos.add(Icon(Icons.close, color: Colors.red,));
+      }
+
       if(perguntas.ultima()){
         Alert(context: context, title: 'Fim do Quiz??!', desc: 'Voce acertou $corretas de ${perguntas.getQuantidade()} .',).show();
         marcadoresPontos.clear();
@@ -93,7 +94,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
             ),
-            Row(children: marcadoresPontos,)
+            Expanded(child: GridView.count(crossAxisCount: 11, children: marcadoresPontos.toList(),)),
           ],
         )),
       ),
