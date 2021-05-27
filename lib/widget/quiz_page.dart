@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../perguntas.dart';
 
 class QuizPage extends StatefulWidget {
   @override
@@ -7,11 +10,36 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
 
-  List<Widget> marcadoresPontos = [
-    Icon(Icons.check, color: Colors.green,),
-    Icon(Icons.close, color: Colors.red,),
-    Icon(Icons.check, color: Colors.green,),
-  ];
+  List<Widget> marcadoresPontos = [];
+
+  Perguntas perguntas = Perguntas();
+
+  List<bool> respostas = [];
+
+
+  void confereResposta(bool resposta){
+    if(perguntas.getPergunta().resposta == resposta ){
+      print('acertou miseravel');
+      respostas.add(true);
+      marcadoresPontos.add(Icon(Icons.check, color: Colors.green,));
+    }else{
+      print('errou lazarento');
+      respostas.add(false);
+      marcadoresPontos.add(Icon(Icons.close, color: Colors.red,));
+    }
+    proxima();
+  }
+
+  void  proxima(){
+    setState(() {
+      Alert(
+        context: context,
+        title: 'Fim do Quiz!',
+        desc: 'Você respondeu a todas as perguntas.',
+      ).show();
+      perguntas.proxima();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,7 +54,7 @@ class _QuizPageState extends State<QuizPage> {
             Expanded(
               flex: 5,
               child: Center(
-                  child: Text('Pergunta que eu respondo pequeno gafanhoto!',
+                  child: Text(perguntas.getPergunta().enunciado,
                       textAlign: TextAlign.center ,
                       style: TextStyle(
                         fontSize: 25.0,
@@ -45,7 +73,7 @@ class _QuizPageState extends State<QuizPage> {
                       fontSize: 20.0,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () { confereResposta(true,);},
                 ),
               ),
             ),
@@ -62,7 +90,8 @@ class _QuizPageState extends State<QuizPage> {
                       fontSize: 20.0,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () { confereResposta(false,);
+                  },
                 ),
               ),
             ),
