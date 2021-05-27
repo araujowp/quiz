@@ -30,11 +30,18 @@ class Perguntas {
     // Pergunta('A velocidade de rotação da Terra é de 1674.4 km/h',true),
   ];
 
+  bool ultima(){
+    print('_perguntaAtual $_perguntaAtual' );
+    print('qtd ${_listaPerguntas.length -1}' );
+    return (_perguntaAtual == _listaPerguntas.length -1);
+  }
+  reiniciar(){
+    _perguntaAtual = 0;
+  }
   proxima(){
-    if(_perguntaAtual < _listaPerguntas.length -1){
+    if(!ultima()){
       _perguntaAtual++;
-    }else {
-      print('opa acabou a lista');
+      print('proxima $_perguntaAtual' );
     }
   }
 
@@ -42,6 +49,9 @@ class Perguntas {
    return _listaPerguntas;
   }
 
+  int getQuantidade(){
+    return _listaPerguntas.length;
+  }
   Pergunta getPergunta(){
     return _listaPerguntas[_perguntaAtual];
   }

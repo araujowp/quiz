@@ -11,34 +11,34 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
 
   List<Widget> marcadoresPontos = [];
-
   Perguntas perguntas = Perguntas();
-
-  List<bool> respostas = [];
-
+  int corretas = 0;
 
   void confereResposta(bool resposta){
+
     if(perguntas.getPergunta().resposta == resposta ){
-      print('acertou miseravel');
-      respostas.add(true);
       marcadoresPontos.add(Icon(Icons.check, color: Colors.green,));
+      corretas++;
     }else{
-      print('errou lazarento');
-      respostas.add(false);
       marcadoresPontos.add(Icon(Icons.close, color: Colors.red,));
     }
-    proxima();
+
+    setState(() {
+      if(perguntas.ultima()){
+        Alert(context: context, title: 'Fim do Quiz??!', desc: 'Voce acertou $corretas de ${perguntas.getQuantidade()} .',).show();
+        marcadoresPontos.clear();
+        perguntas.reiniciar();
+        corretas = 0;
+      }else{
+        proxima();
+      }
+    });
   }
 
   void  proxima(){
-    setState(() {
-      Alert(
-        context: context,
-        title: 'Fim do Quiz!',
-        desc: 'Você respondeu a todas as perguntas.',
-      ).show();
+    //setState(() {
       perguntas.proxima();
-    });
+    //});
   }
   @override
   Widget build(BuildContext context) {
@@ -63,9 +63,8 @@ class _QuizPageState extends State<QuizPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: FlatButton(
-                  textColor: Colors.white,
-                  color: Colors.deepPurple,
+                child: TextButton(
+                  style: TextButton.styleFrom(primary: Colors.white, backgroundColor: Colors.brown),
                   child: Text(
                     'Verdadeiro',
                     style: TextStyle(
@@ -80,9 +79,8 @@ class _QuizPageState extends State<QuizPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: FlatButton(
-                  textColor: Colors.white,
-                  color: Colors.deepPurple,
+                child: TextButton(
+                  style: TextButton.styleFrom(primary: Colors.white, backgroundColor: Colors.brown),
                   child: Text(
                     'Falso',
                     style: TextStyle(
